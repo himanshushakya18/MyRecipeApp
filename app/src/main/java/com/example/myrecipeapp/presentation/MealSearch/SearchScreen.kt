@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -55,7 +56,7 @@ fun SearchScreen(
     var query by remember { mutableStateOf("") }
     Column(
         Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(Background)
     ) {
         Row(
@@ -68,6 +69,7 @@ fun SearchScreen(
                 onValueChange = {
                     query = it
                 },
+
                 modifier = Modifier
                     .padding(8.dp)
                     .weight(1f)

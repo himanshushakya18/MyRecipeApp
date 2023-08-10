@@ -1,7 +1,9 @@
 package com.example.myrecipeapp.presentation.MealDetail
 
+import android.icu.text.UnicodeSetIterator
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,14 +28,29 @@ fun DetailScreen(
 ) {
     var state = viewModel.state
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = Unit) {
         viewModel.getMealDetails(id)
+    }
+    if(state.isLoading){
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ){
+
+            CircularProgressIndicator()
+        }
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        if(state.error.isNotEmpty()){
+            Text(
+                text = state.error,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         Image(
             painter = rememberAsyncImagePainter(state.data?.image),
             contentDescription = "image of dish",

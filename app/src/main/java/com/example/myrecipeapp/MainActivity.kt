@@ -13,10 +13,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.myrecipeapp.data.remote.MealApi
 import com.example.myrecipeapp.data.repository.MealSearchRepoImpl
 import com.example.myrecipeapp.domain.repository.MealSearchRepo
 import com.example.myrecipeapp.domain.use_case.GetMealsUseCase
+import com.example.myrecipeapp.presentation.MealDetail.DetailScreen
 import com.example.myrecipeapp.presentation.MealSearch.MealSearchViewModel
 import com.example.myrecipeapp.ui.theme.MyRecipeAppTheme
 import com.example.myrecipeapp.presentation.MealSearch.SearchScreen
@@ -30,8 +32,8 @@ class MainActivity : ComponentActivity() {
         setContent {
 
 
-            navigate()
-
+//            navigate()
+            SearchScreen(navController = rememberNavController())
         }
     }
 }
