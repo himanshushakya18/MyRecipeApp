@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,6 +32,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,13 +41,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.myrecipeapp.Screens
 import com.example.myrecipeapp.domain.model.Meal
 import com.example.myrecipeapp.ui.theme.Background
+import com.example.myrecipeapp.ui.theme.CardBg
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +62,7 @@ fun SearchScreen(
     viewModel: MealSearchViewModel = viewModel()
 ) {
 
-    val state = viewModel._state
+    val state by viewModel.state.collectAsState()
     var query by remember { mutableStateOf("") }
     Column(
         Modifier
@@ -77,7 +87,22 @@ fun SearchScreen(
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
+                    containerColor = CardBg,
+                    cursorColor = Color.White,
                 ),
+                placeholder = {
+                              Text(
+                                  text = "Search",
+                                  fontSize = 18.sp,
+                                  color  = Color.White
+                              )
+                },
+                textStyle = TextStyle(
+                  fontSize = 18.sp,
+                    color = Color.White,
+
+                )
+                ,
                 trailingIcon = {
                     IconButton(
                         onClick = { viewModel.getMealList(query) },
@@ -85,7 +110,8 @@ fun SearchScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = "Search Icon"
+                            contentDescription = "Search Icon",
+                            tint = Color.White
                         )
                     }
                 }
@@ -103,7 +129,16 @@ fun SearchScreen(
         }
 
         if (state.isLoading) {
-            CircularProgressIndicator()
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier  = Modifier.fillMaxSize()
+
+            ){
+
+                CircularProgressIndicator(
+                    color = CardBg
+                )
+            }
         }
 
 
@@ -114,7 +149,7 @@ fun SearchScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                items(items = state.data) {
+                items(items = state.data ?: emptyList()) {
                     ListItem(it) {
                         val id = it.mealId
                         navController.navigate(Screens.DETAILS.name + "$id")
@@ -135,33 +170,43 @@ fun SearchScreen(
 
 @Composable
 fun ListItem(meal: Meal, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier.padding(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = CardBg
+        )
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable {
-                onClick()
-            },
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
+    ) {
 
-        ) {
-        Image(
-            painter = rememberAsyncImagePainter(meal.image),
-            contentDescription = "Image of Dish",
+        Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .size(80.dp)
+                .fillMaxWidth()
+                .clickable {
+                    onClick()
+                },
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
 
-        )
-        Log.d("Image", "${meal.image}")
 
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            text = meal.name,
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.White
-        )
+            ) {
+            Image(
+                painter = rememberAsyncImagePainter(meal.image),
+                contentDescription = "Image of Dish",
+                modifier = Modifier
+                    .padding(4.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .size(80.dp)
+
+            )
+            Log.d("Image", "${meal.image}")
+
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = meal.name,
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White,
+
+                )
+        }
     }
 }

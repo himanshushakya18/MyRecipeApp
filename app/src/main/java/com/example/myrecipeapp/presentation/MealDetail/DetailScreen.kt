@@ -1,6 +1,6 @@
 package com.example.myrecipeapp.presentation.MealDetail
 
-import android.icu.text.UnicodeSetIterator
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,7 +28,7 @@ fun DetailScreen(
     viewModel: DetailScreenViewModel = viewModel(),
     id: String
 ) {
-    var state = viewModel.state
+    val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getMealDetails(id)

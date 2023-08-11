@@ -32,8 +32,8 @@ class MainActivity : ComponentActivity() {
         setContent {
 
 
-//            navigate()
-            SearchScreen(navController = rememberNavController())
+            navigate()
+//            SearchScreen(rememberNavController())
         }
     }
 }

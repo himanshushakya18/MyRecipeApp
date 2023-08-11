@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.example.myrecipeapp.common.Resource
 import com.example.myrecipeapp.domain.use_case.GetMealsDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -14,23 +17,24 @@ import javax.inject.Inject
 class DetailScreenViewModel @Inject constructor(
     private val useCase: GetMealsDetailsUseCase
 ) : ViewModel() {
- var state by mutableStateOf(DetailScreenState())
-     private set
+ private val _state = MutableStateFlow(DetailScreenState())
+    val state  = _state.asStateFlow()
+
     fun getMealDetails(id:String){
         useCase.invoke(id).onEach {
             when (it){
                 is Resource.Error -> {
-                   state = state.copy(
-                       error = (it.message.toString())
+                   _state.value.copy(
+                       error = it.message?:""
                    )
                 }
                 is Resource.Loading ->{
-                    state = state.copy(
+                    _state.value.copy(
                         isLoading = true
                     )
                 }
                 is Resource.Success -> {
-                    state = state.copy(
+                    _state.value.copy(
                         data = it.data
                     )
                 }

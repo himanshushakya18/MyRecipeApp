@@ -66,10 +66,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     //navigation
-    implementation("androidx.navigation:navigation-compose:2.6.0")
+    val nav_version = "2.7.0"
+
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 
     implementation ("androidx.activity:activity-ktx:1.7.2")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose")
+    //dagger hilt
     implementation ("com.google.dagger:hilt-android:2.47")
     kapt ("com.google.dagger:hilt-android-compiler:2.47")
 

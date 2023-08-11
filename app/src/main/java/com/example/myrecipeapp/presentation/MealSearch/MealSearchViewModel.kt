@@ -9,6 +9,9 @@ import com.example.myrecipeapp.common.Resource
 import com.example.myrecipeapp.domain.use_case.GetMealsUseCase
 import com.example.myrecipeapp.presentation.MealSearch.MealSearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -16,22 +19,22 @@ import javax.inject.Inject
 @HiltViewModel
 class MealSearchViewModel @Inject constructor(private val getMealUseCase: GetMealsUseCase) :
     ViewModel() {
-    var _state by mutableStateOf(MealSearchState())
-        private set
+    private val _state = MutableStateFlow(MealSearchState())
+    var state = _state.asStateFlow()
 
     fun getMealList(s: String) {
         getMealUseCase.invoke(s).onEach {
             when (it) {
                 is Resource.Error -> {
-                    _state = MealSearchState(error = it.message ?: "")
+                    _state.value = MealSearchState(error = it.message?:"")
                 }
 
                 is Resource.Loading -> {
-                    _state= MealSearchState(isLoading = true)
+                    _state.value= MealSearchState(isLoading = true)
                 }
 
                 is Resource.Success -> {
-                    _state = MealSearchState(data = it.data)
+                    _state.value = MealSearchState(data = it.data)
                 }
             }
         }.launchIn(viewModelScope)
