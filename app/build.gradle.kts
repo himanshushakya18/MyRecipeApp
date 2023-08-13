@@ -59,6 +59,13 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-scalars:2.1.0")
 
 
+    // koin
+    val koin_version = "3.2.0-beta-1"
+    implementation("io.insert-koin:koin-core:$koin_version")
+    testImplementation("io.insert-koin:koin-test:$koin_version")
+    implementation ("io.insert-koin:koin-androidx-navigation:$koin_version")
+    implementation ("io.insert-koin:koin-androidx-compose:$koin_version")
+
     //coil
     implementation("io.coil-kt:coil-compose:2.0.0-rc01")
 

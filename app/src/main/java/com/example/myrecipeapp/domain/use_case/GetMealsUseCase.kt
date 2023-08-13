@@ -4,13 +4,14 @@ import com.example.myrecipeapp.common.Resource
 import com.example.myrecipeapp.data.model.toDomainMeal
 import com.example.myrecipeapp.data.repository.MealSearchRepoImpl
 import com.example.myrecipeapp.domain.model.Meal
+import com.example.myrecipeapp.domain.repository.MealSearchRepo
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetMealsUseCase @Inject constructor(private val repository: MealSearchRepoImpl) {
+class GetMealsUseCase (private val repository: MealSearchRepo) {
     operator fun invoke(s:String):Flow<Resource<List<Meal>>> = flow {
         try {
             emit(Resource.Loading())

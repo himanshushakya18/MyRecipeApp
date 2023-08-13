@@ -6,7 +6,7 @@ import com.example.myrecipeapp.domain.repository.MealSearchRepo
 import javax.inject.Inject
 
 
-class MealSearchRepoImpl @Inject constructor(private val mealApi: MealApi): MealSearchRepo {
+class MealSearchRepoImpl(private val mealApi: MealApi): MealSearchRepo {
     override suspend fun getMealList(s: String): MealsDTO {
         return mealApi.getMealList(s)
     }

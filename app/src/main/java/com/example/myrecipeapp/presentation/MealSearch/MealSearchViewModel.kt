@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-@HiltViewModel
-class MealSearchViewModel @Inject constructor(private val getMealUseCase: GetMealsUseCase) :
+
+class MealSearchViewModel (private val getMealUseCase: GetMealsUseCase) :
     ViewModel() {
     private val _state = MutableStateFlow(MealSearchState())
     var state = _state.asStateFlow()

@@ -2,6 +2,7 @@ package com.example.myrecipeapp.domain.use_case
 
 import com.example.myrecipeapp.common.Resource
 import com.example.myrecipeapp.data.model.toDomainMealDetail
+import com.example.myrecipeapp.data.repository.MealDetailsRepoImpl
 import com.example.myrecipeapp.domain.model.MealDetails
 import com.example.myrecipeapp.domain.repository.MealDetailsRepo
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +11,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetMealsDetailsUseCase @Inject constructor(private val repository: MealDetailsRepo) {
+class GetMealsDetailsUseCase(private val repository: MealDetailsRepo) {
     operator fun invoke(id:String):Flow<Resource<MealDetails>> = flow {
             try {
                 emit(Resource.Loading())
