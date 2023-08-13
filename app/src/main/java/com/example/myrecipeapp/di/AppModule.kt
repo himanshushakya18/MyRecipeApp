@@ -1,4 +1,4 @@
-package com.example.myrecipeapp.hilt
+package com.example.myrecipeapp.di
 
 import com.example.myrecipeapp.common.Constants
 import com.example.myrecipeapp.data.remote.MealApi

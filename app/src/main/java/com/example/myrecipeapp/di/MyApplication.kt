@@ -1,7 +1,6 @@
-package com.example.myrecipeapp.hilt
+package com.example.myrecipeapp.di
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
 import org.koin.core.context.GlobalContext.startKoin
 
 
